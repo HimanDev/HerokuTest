@@ -3,31 +3,31 @@ package com.krisnela.test.heroku;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-
-@Controller
+@RestController
+@CrossOrigin
 public class ControllerHiman {
-	@RequestMapping(value = "/Users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<User> getAllUsers() {
-//		Query query = new Query();
-//		query.limit(30);
-//		query.skip(0);
-		// query.addCriteria(Criteria.where("name").is("Himan Dev"));
-		List<User> userList=new ArrayList<>();
-		User u1=new User();
-		u1.setName("Himan");
-		User u2=new User();
-		u2.setName("Dev");
-		User u3=new User();
-		u3.setName("Chandan");
-		userList.add(u1);
-		userList.add(u2);
-		userList.add(u3);
-		return userList;
+	@Autowired
+	private MongoOperations mongoOperations;
+
+	@RequestMapping(value = "/Users", method = RequestMethod.POST)
+	public  User getAllUsers(@RequestBody User user) {
+		mongoOperations.save(user);
+		return user;
+	}
+	@RequestMapping(value="Users",method=RequestMethod.GET)
+	public List<User> get(){
+		return mongoOperations.findAll(User.class);
 	}
 }

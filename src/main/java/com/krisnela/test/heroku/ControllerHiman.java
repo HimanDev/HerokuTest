@@ -26,7 +26,7 @@ public class ControllerHiman {
 		mongoOperations.save(user);
 		return user;
 	}
-	@RequestMapping(value="Users",method=RequestMethod.GET)
+	@RequestMapping(value="/Users",method=RequestMethod.GET)
 	public List<User> get(){
 		return mongoOperations.findAll(User.class);
 	}
